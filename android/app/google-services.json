@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "453364626293",
+    "project_id": "smile-quiz-app",
+    "storage_bucket": "smile-quiz-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453364626293:android:e38f813fef706ee7f7193c",
+        "android_client_info": {
+          "package_name": "com.example.smile_quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453364626293-odd6ncft883ruvp8rd223hcl867c1k4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqtoZo0FFYFVXYp3XlwY3BglNpA0JjcKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453364626293-odd6ncft883ruvp8rd223hcl867c1k4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

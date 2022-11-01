@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'login_screen.dart';
 
@@ -262,7 +264,7 @@ TextEditingController cpasswordController = TextEditingController();
                   ),
             
                   GestureDetector(
-                    onTap:(){},
+                    onTap:register,
                      //() {
                       // Write Click Listener Code Here.
                       /* Navigator.push(
@@ -327,41 +329,36 @@ TextEditingController cpasswordController = TextEditingController();
         )
     );
   }
-  // Future register() async {
-  //    final isValid = formKey.currentState!.validate();
-  //    if (!isValid) return;
-  //    if (passwordController.text == cpasswordController.text) {
-  //      try {
-  //      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //            email: emailController.text.trim(),
-  //            password: passwordController.text.trim());
-  //       log(emailController.text,name: "email controller value");    
-  //       log(passwordController.text,name: "pasw controller value");    
+   Future register() async {
+      final isValid = formKey.currentState!.validate();
+      if (!isValid) return;
+     if (passwordController.text == cpasswordController.text) {
+       try {
+       await FirebaseAuth.instance.createUserWithEmailAndPassword(
+             email: emailController.text.trim(),
+             password: passwordController.text.trim());
+        log(emailController.text,name: "email controller value");    
+        log(passwordController.text,name: "pasw controller value");    
 
-  //       // Utils.toastMessage("Register Sucessfull");
+        
+        Fluttertoast.showToast(
+        msg: "Registered Successfully",  // message
+                 // duration
+    );
 
-  //        //final sp = await SharedPreferences.getInstance();
-  //        //sp.setString(userEmail, FirebaseAuth.instance.currentUser!.email!);
-  // //        ignore: use_build_context_synchronously
-
-  //       Fluttertoast.showToast(
-  //       msg: "This is a Toast message",  // message
-  //                // duration
-  //   );
-
-  //        await Navigator.pushReplacement(
-  //                         context,
-  //                         MaterialPageRoute(
-  //                           builder: (context) => LoginScreen(),
-  //                         )
-  //                       );
-  //      } on FirebaseAuthException catch (e) {
-  //        //Utils.flushBarErrorMessage(e.message!, context);
-  //      print(e);
-  //   }
-  //    } else {
-  //     print("Password doesn't match");
-  //      //Utils.flushBarErrorMessage("Password doesn't match", context);
-  //    }
-  //  }
+         await Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          )
+                        );
+       } on FirebaseAuthException catch (e) {
+         //Utils.flushBarErrorMessage(e.message!, context);
+       print(e);
+    }
+     } else {
+      print("Password doesn't match");
+       //Utils.flushBarErrorMessage("Password doesn't match", context);
+     }
+   }
 }

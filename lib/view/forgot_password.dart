@@ -1,4 +1,8 @@
 import 'dart:io';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'login_screen.dart';
 import 'package:flutter/material.dart';
 import 'signup_screen.dart';
@@ -9,6 +13,17 @@ class ForgotScreen extends StatefulWidget {
 }
 
 class StartState extends State<ForgotScreen> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return initWidget();
@@ -37,7 +52,7 @@ class StartState extends State<ForgotScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 50),
                         child: Image.asset(
-                          "images\smile_emoji.png",
+                          "assets/smileybee.png",
                           height: 90,
                           width: 90,
                         ),
@@ -46,7 +61,7 @@ class StartState extends State<ForgotScreen> {
                         margin: EdgeInsets.only(right: 20, top: 20),
                         alignment: Alignment.topCenter,
                         child: Text(
-                          "Verify Email",
+                          "Reset Password",
                           style: TextStyle(
                               fontSize: 20,
                               color: Colors.white
@@ -74,29 +89,37 @@ class StartState extends State<ForgotScreen> {
                   ),
                 ],
               ),
-              child: TextField(
+              child: TextFormField(
+                controller: emailController,
                 cursorColor: Color.fromARGB(255, 13, 120, 104),
                 decoration: InputDecoration(
+                  labelText: 'Email',
                   icon: Icon(
                     Icons.email,
                     color: Color.fromARGB(255, 13, 120, 104),
                   ),
-                  hintText: "Enter Email",
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
+                 
+                  //hintText: "Enter Valid Email",
+                  //enabledBorder: InputBorder.none,
+                  //focusedBorder: InputBorder.none,
                 ),
+                 validator: (email) => 
+                    email != null && !EmailValidator.validate(email)
+                    ? 'Enter a valid email'
+                    :null
               ),
             ),
 
             GestureDetector(
-              onTap: () {
-                // Write Click Listener Code Here.
-                Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ));
-              },
+              onTap: resetPassword,
+              // () {
+              //   // Write Click Listener Code Here.
+              //   Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => LoginScreen(),
+              //           ));
+              // },
               child: Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(left: 20, right: 20, top: 70),
@@ -118,7 +141,7 @@ class StartState extends State<ForgotScreen> {
                   ],
                 ),
                 child: Text(
-                  "verify Email",
+                  "Reset Password",
                   style: TextStyle(
                       color: Colors.white
                   ),
@@ -130,5 +153,33 @@ class StartState extends State<ForgotScreen> {
         )
       )
     );
+    
+  }
+  Future resetPassword() async{
+    showDialog(
+      context: context, 
+      barrierDismissible: false,
+      builder: (context) => Center(child: CircularProgressIndicator()),);
+    try{
+    await FirebaseAuth.instance
+      .sendPasswordResetEmail(email: emailController.text.trim());
+     Fluttertoast.showToast(
+        msg: "Password Reset Email Sent",  // message
+                 // duration
+
+    );
+       Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ));
+              
+   
+    } on FirebaseAuthException catch (e) {
+      print(e);
+
+      
+    }
+
   }
 }

@@ -10,4 +10,7 @@ const kPrimaryGradient = LinearGradient(
   begin: Alignment.centerLeft,
   end: Alignment.centerRight,
 );
+class ApiUrl {
+  static var questionUrl = "https://marcconrad.com/uob/smile/api.php?out=json";
+}
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smile_quiz/utils/constants.dart';
+import 'package:smile_quiz/view/login_screen.dart';
 
 import 'smile_screen.dart';
 import 'signup_screen.dart';
@@ -10,6 +12,23 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+      backgroundColor: Color.fromARGB(0, 9, 31, 43), 
+        elevation: 0,
+        actions: [
+         TextButton(onPressed: (){
+          Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        )
+                      );
+         }, child: Text("quit"))
+        ],
+        
+      ),
       
       body: Container(
         decoration: BoxDecoration(
@@ -63,15 +82,21 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Spacer(), // 1/6
                     InkWell(
-                      onTap: () {
-             
-                        Navigator.pushReplacement(
+                      onTap: () //async{
+                  //final prefs = await SharedPreferences.getInstance();
+                 // prefs.setBool('is loggedin',false);
+                 {
+                  Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => SmileScreen(),
                         )
                       );
-              },
+                 },
+                   
+             
+                            
+              
                       child: Container(
                         width: 300, height: 50,
                         alignment: Alignment.center,
@@ -87,7 +112,9 @@ class HomeScreen extends StatelessWidget {
                               .button!
                               .copyWith(color: Colors.black),
                         ),
+                    
                       ),
+                      
                     ),
                     Spacer(flex: 2), // it will take 2/6 spaces
                   ],

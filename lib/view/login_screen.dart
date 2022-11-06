@@ -1,7 +1,17 @@
 import 'dart:developer';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:smile_quiz/provider/google_sign_in.dart';
 
+
+import '../controller/login_controller.dart';
+import '../utils/user_details.dart';
 import 'Home_screen.dart';
 
 import 'forgot_password.dart';
@@ -22,7 +32,52 @@ class StartState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  
+  /* loginUI() {
+    // loggedINUI
+    // loginControllers
+
+    return Consumer<LoginController>(builder: (context, model, child) {
+      // if we are already logged in
+      if (model.userDetails != null) {
+        return Center(
+          
+        );
+      } else {
+        
+      }
+    });
+  }
+*/
+  // Future<void> googleSignIn() async{
+  //   await GoogleSignInProvider().googleSignIn;
+  //     Navigator.pushReplacement(
+  //                         context,
+  //                         MaterialPageRoute(
+  //                           builder: (context) => HomeScreen(),
+  //                         )
+  //                       );
+
+                    
+
+  // }
+  Future<void> signInWithGoogle() async {
+    
+    GoogleSignInProvider().googleSignIn;
+
+    // final sp = await SharedPreferences.getInstance();
+    // sp.setString(userEmail, FirebaseAuth.instance.currentUser!.email!);
+    // sp.setBool(loginFlag, true);
+
+    Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                          )
+                        );
+     
+    });
+  }
 
 
   @override
@@ -99,7 +154,7 @@ class StartState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                child: TextField(
+                child: TextFormField(
                   controller: emailController,
                   cursorColor: Color.fromARGB(255, 11, 197, 63),
                   decoration: InputDecoration(
@@ -107,10 +162,15 @@ class StartState extends State<LoginScreen> {
                       Icons.email,
                       color: Color.fromARGB(255, 11, 197, 63),
                     ),
-                    hintText: "Enter Email",
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
+                    
+                    //hintText: "Enter Email",
+                    //enabledBorder: InputBorder.none,
+                    //focusedBorder: InputBorder.none,
                   ),
+                   validator: (email) => 
+                    email != null && !EmailValidator.validate(email)
+                    ? 'Enter a valid email'
+                    :null
                 ),
               ),
         
@@ -166,7 +226,19 @@ class StartState extends State<LoginScreen> {
               ),
         
               GestureDetector(
-                onTap: login,
+                onTap: login, 
+                /* onTap: ()async{
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('isloggedin',true);
+                   Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                          )
+                        );
+
+                    */
+                
                   // Write Click Listener Code Here.
                   
                 child: Container(
@@ -196,6 +268,7 @@ class StartState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
@@ -222,13 +295,83 @@ class StartState extends State<LoginScreen> {
                     )
                   ],
                 ),
-              )
-            ],
+              ),
+
+                 Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: MaterialButton(
+              
+                    color: Colors.teal[100],
+                    elevation: 10,
+                    onPressed:
+                    () async{ 
+                      final provider =
+                        Provider.of<GoogleSignInProvider>(context, listen: false);
+                      provider.googleLogin();
+                      //  Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => HomeScreen(),
+                      //     )
+                      //   );
+
+                      
+                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 30.0,
+                          width: 30.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/googleimage.png'),
+                                fit: BoxFit.cover),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text("Sign In with Google")
+                        
+                      ],
+                    ),
+                  )),
+              ],)
+                   
+                  // by onpressed we call the function signup function
+                  //onPressed: ();
+                    //signup(context); 
+            
           ),
         )
-      )
-    );
+      );
+      //class LoginController with ChangeNotifier {
+  // object
+  
+    
   }
+  // var _googleSignIn = GoogleSignIn();
+  // GoogleSignInAccount? googleSignInAccount;
+  // UserDetails? userDetails;
+
+  // // fucntion for google login
+  // googleLogin() async {
+  //   this.googleSignInAccount = await _googleSignIn.signIn();
+  //   // inserting values to our user details model
+
+  //   this.userDetails = new UserDetails(
+  //     displayName: this.googleSignInAccount!.displayName,
+  //     email: this.googleSignInAccount!.email,
+  //     photoURL: this.googleSignInAccount!.photoUrl,
+  //   );
+
+  //   // call
+  //   notifyListeners();
+  
+  // }
   Future login() async {
       final isValid = formKey.currentState!.validate();
       if (!isValid) return;
@@ -256,5 +399,9 @@ class StartState extends State<LoginScreen> {
          //Utils.flushBarErrorMessage(e.message!, context);
        print(e);
     }
-     } 
-   }
+     
+  }
+}
+
+    
+     

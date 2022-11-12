@@ -107,15 +107,6 @@ class StartState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                       /* Container(
-                          // margin: EdgeInsets.only(top: 50),
-                          child: Image.asset(
-                            "assets\smile_emoji.png",
-                            height: 205,
-                            width: 205 ,
-                          ),
-                        ),
-                        */
                         Container(
                           decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/smileybee.png"),fit: BoxFit.cover)),
                           height: 100,
@@ -167,10 +158,10 @@ class StartState extends State<LoginScreen> {
                     //enabledBorder: InputBorder.none,
                     //focusedBorder: InputBorder.none,
                   ),
-                   validator: (email) => 
-                    email != null && !EmailValidator.validate(email)
-                    ? 'Enter a valid email'
-                    :null
+                  //  validator: (email) => 
+                  //   email != null && !EmailValidator.validate(email)
+                  //   ? 'Enter a valid email'
+                  //   :null
                 ),
               ),
         
@@ -313,9 +304,7 @@ class StartState extends State<LoginScreen> {
                       //     MaterialPageRoute(
                       //       builder: (context) => HomeScreen(),
                       //     )
-                      //   );
-
-                      
+                      //   );  
                      },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,

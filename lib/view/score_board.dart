@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_svg/svg.dart';
-import 'package:smile_quiz/controller/question_controller.dart';
+
 import 'Home_screen.dart';
 
 
 class ScoreScreen extends StatelessWidget {
+  final int? finalScore;
+  const ScoreScreen({Key? key, this.finalScore}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // QuestionController _qnController = Get.put(QuestionController());
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -17,7 +18,7 @@ class ScoreScreen extends StatelessWidget {
         elevation: 0,
         actions: [
          TextButton(onPressed: (){
-          Navigator.push(
+          Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomeScreen(),
@@ -53,7 +54,7 @@ class ScoreScreen extends StatelessWidget {
               Spacer(),
               Spacer(flex: 1),
               Text(
-                "Your score is: ",
+                "Your score is: $finalScore ",
                 style: Theme.of(context)
                     .textTheme
                     .headline5
